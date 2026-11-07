@@ -53,6 +53,32 @@ These are not set up inside Switch. The agent uses what is already on the comput
 
 Because these come from the computer, every Claude agent on this machine can use them, and the agent acts as you in each one.
 
+## How to set it up from scratch
+
+Follow these steps to rebuild the agent, for example on another computer.
+
+1. **Run Switch Console** on a Mac with Claude Code installed and signed in. Check in Switch Console under Settings that the machine is online and Claude shows as ready.
+2. **Install and open Beeper Desktop**, sign in, and add your iMessage and WhatsApp accounts. Leave it running.
+3. **Add the Beeper MCP server.** In a terminal run:
+   `claude mcp add --transport http --scope user beeper http://127.0.0.1:23373/v0/mcp`
+   Then open Claude Code, run `/mcp`, choose beeper and sign in. Check with `claude mcp list` that it shows as connected.
+4. **Connect Linear.** In your claude.ai connector settings, connect Linear and pick the workspace you want the tasks in (Kathalyst here).
+5. **Create the Follow Ups project in Linear** in that workspace, under the team that should own the tasks (Kathalyst here). The agent puts every task in it.
+6. **Connect Slack.** In your claude.ai connector settings, sign in to Slack. Skip this and the agent just leaves Slack out.
+7. **Create the agent.** In Switch Console go to Agents, then Add a new agent. Or ask switch-buddy-admin in its chat to do it. Use these settings:
+   - Name: `followup-tracker`
+   - Machine: your Mac
+   - Provider: Claude
+   - Folder: leave empty for a fresh folder of its own
+   - Bypass permissions: off (auto mode on)
+   - Who can talk to it: owner and owner's agents
+   - Instructions: paste the instructions from the agent's settings page (or ask switch-buddy-admin for the full text). They must include the rule that it never sends a message.
+8. **Check it started.** On the agent's page in Switch Console its status should say running.
+9. **Restart the agent after adding any connector** (Beeper, Linear or Slack) that you connected after it started. A running session does not pick up new connectors until it restarts. Send `!reset` in its chat.
+10. **Do a first run.** Tell it **followups**. Approve the permission prompts it shows, then check the first tasks in Follow Ups and the summary it posts.
+
+If it says a source is unavailable, repeat the matching step above: 3 for Beeper, 4 for Linear, 6 for Slack.
+
 ## How to use it
 
 1. Open the agent in Switch Console and start a chat with it.
